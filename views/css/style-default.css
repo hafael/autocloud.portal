@@ -1,0 +1,52 @@
+.container{
+	width: 940px;
+}
+
+/* Cadastro */
+
+.seleciona-planos .span4{
+	min-height: 310px;
+	position: relative;
+}
+.seleciona-planos h2 span{
+	float: right;
+	background-color: #5bb75b;
+	border-radius: 4px;
+	color: #fff;
+	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.25);
+	padding: 0 10px;
+}
+.seleciona-planos a.btn{
+	display: block;
+	vertical-align: bottom;
+	position: absolute;
+	bottom: 0;
+}
+
+.dados-cadastro{
+	margin-top: 20px;
+}
+.dados-cadastro .control-group .control-label{
+	width: 80px;
+}
+.dados-cadastro .control-group .controls {
+	margin-left: 100px;
+}
+.dados-cadastro form#login,
+.dados-cadastro form#cadastro .control-group:not(.visible) {
+	display: none;
+}
+.dados-cadastro form#login{
+	margin-left: 0;
+}
+.dados-cadastro #nome{
+	text-transform:capitalize;
+}
+
+/* Footer */
+
+footer{
+	margin-top: 100px;
+	display: block;
+	clear: both;
+}
