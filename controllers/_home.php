@@ -18,118 +18,107 @@ class Home extends CI_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
 
-	var $store_id;
-
 	public function __construct(){
 		parent::__construct();
 		$data = array();
+		$this->load->helper('url');
+		$this->load->model('anunciante');
+		$this->load->model('anunciante_pessoa_fisica','anunciantePF');
+		
+		if($this->anunciante->logged()){
 
+			$this->anunciante->define($this->session->userdata('id_login'));
+			$this->anunciantePF->define($this->session->userdata('id_login'));
+		}
 	}
 
 	public function index(){
-
-	    /*
-	    $this->load->model('store');
-	    $this->load->model('home');
-	    $this->load->model('pages');
-	    $this->load->model('vehicle');
-	    $this->load->model('announcement');
-	    
-	    $hostName = $this->input->server('HTTP_HOST');
-		$host = explode(".", $this->input->server('HTTP_HOST'));
-
-		if($host[0] == "www"){
-			$host = $host[1];
-		}else{
-			$host = $host[0];
-		}
-
-
-	    if(!get_cookie('AC_autocloud_store_ID')){
-
-	    	$store_id = $this->store->define_store($host, $hostName);
-
-	    	$cookie = array(
-               'name'   => 'autocloud_store_ID',
-               'value'  => $store_id,
-               'expire' => 0,
-               'domain' => $this->input->server('HTTP_HOST'),
-               'path'   => '/',
-               'prefix' => 'AC_',
-            );
-
-            set_cookie($cookie);
-
-	    }else{
-	    	$store_id = get_cookie('AC_autocloud_store_ID');
-	    }
-	    $data['array_vehicle'] = array();
-	    $this->data['store'] = $this->home->store_info($store_id);
-	    $this->data['pages'] = $this->pages->return_pages($store_id);
-	    $this->data['array_vehicle_brand'] = $this->vehicle->vehicle_brand();
-	    $this->data['array_announcements'] = $this->announcement->get_last($store_id);
-
-
-	    if($this->input->post("car_model") == true){
-			//$this->data['array_vehicle_model'] = $this->vehicle->vehicle_model($this->input->post("car_model"));
-		}
-		*/
-		$this->load->model('vehicle');
-		$this->data['array_vehicle_brand'] = $this->vehicle->vehicle_brand();
-
-	    $this->load->view('home', $this->data);
-
-	}
-
-	public function get_vehicle_brands(){
-		$this->load->model('vehicle');
-
-		header('Content-Type: application/x-json; charset=utf-8');
-
-		echo json_encode($this->vehicle->vehicle_brand());
 		
+        $this->load->helper('url');
+		//$this->load->model('anunciante');
+		//$this->load->model('anunciante_pessoa_fisica','anunciantePF');
 
+
+        $this->load->view('escolha_anuncio');
 	}
-	public function get_vehicle_models($car_company_id){
-		$this->load->model('vehicle');
-
-		header('Content-Type: application/x-json; charset=utf-8');
-
-		echo json_encode($this->vehicle->vehicle_model($car_company_id));
+	public function meusAnuncios(){
 		
+        $this->load->helper('url');
+		$this->load->model('anunciante');
+		$this->load->model('anunciante_pessoa_fisica','anunciantePF');
+		$this->anunciante->define($this->session->userdata('id_login'));
+		$this->anunciantePF->define($this->session->userdata('id_login'));
 
+        $this->load->view('home');
 	}
-	public function get_vehicle_years($car_model_id){
-		$this->load->model('vehicle');
-
-		header('Content-Type: application/x-json; charset=utf-8');
-
-		echo json_encode($this->vehicle->vehicle_years($car_model_id));
+	public function novoAnuncio(){
 		
+        $this->load->helper('url');
+		$this->load->model('anunciante');
+		$this->load->model('anunciante_pessoa_fisica','anunciantePF');
+		$this->anunciante->define($this->session->userdata('id_login'));
+		$this->anunciantePF->define($this->session->userdata('id_login'));
 
+        $this->load->view('home');
+	}
+	public function perguntas(){
+		
+        $this->load->helper('url');
+		$this->load->model('anunciante');
+		$this->load->model('anunciante_pessoa_fisica','anunciantePF');
+		$this->anunciante->define($this->session->userdata('id_login'));
+		$this->anunciantePF->define($this->session->userdata('id_login'));
+
+        $this->load->view('home');
+	}
+	public function relatorios(){
+		
+        $this->load->helper('url');
+		$this->load->model('anunciante');
+		$this->load->model('anunciante_pessoa_fisica','anunciantePF');
+		$this->anunciante->define($this->session->userdata('id_login'));
+		$this->anunciantePF->define($this->session->userdata('id_login'));
+
+        $this->load->view('home');
+	}
+	public function upgrade(){
+		
+        $this->load->helper('url');
+		$this->load->model('anunciante');
+		$this->load->model('anunciante_pessoa_fisica','anunciantePF');
+		$this->anunciante->define($this->session->userdata('id_login'));
+		$this->anunciantePF->define($this->session->userdata('id_login'));
+
+        $this->load->view('home');
+	}
+	public function meusDados(){
+		
+        $this->load->helper('url');
+		$this->load->model('anunciante');
+		$this->load->model('anunciante_pessoa_fisica','anunciantePF');
+		$this->anunciante->define($this->session->userdata('id_login'));
+		$this->anunciantePF->define($this->session->userdata('id_login'));
+
+        $this->load->view('home');
+	}
+	public function alterarSenha(){
+		
+        $this->load->helper('url');
+		$this->load->model('anunciante');
+		$this->load->model('anunciante_pessoa_fisica','anunciantePF');
+		$this->anunciante->define($this->session->userdata('id_login'));
+		$this->anunciantePF->define($this->session->userdata('id_login'));
+
+        $this->load->view('home');
 	}
 
-	public function new_annoucement(){
-		$this->load->model('announcement');
-
-		$data = array(
-		   'store_id' => $this->input->post('store_id'),
-		   'car_company_id' => $this->input->post('car_company_id'),
-		   'car_model_id' => $this->input->post('car_model_id'),
-		   'car_year_fabrication_id' => $this->input->post('car_year_fabrication_id'),
-		   'title' => $this->input->post('title')
-		);
-
-
-		if($this->announcement->create($data)){
-			$response = array(
-			   'status' => '200'
-			);
-		}
-
-		header('Content-Type: application/x-json; charset=utf-8');
-		echo json_encode($response);
+	public function logout(){
+	   $this->session->unset_userdata('logged');
+	   $this->session->unset_userdata('id_login');
+	   redirect('home', 'refresh');
 	}
+
+	
 	
 
 	

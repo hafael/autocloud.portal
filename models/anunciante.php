@@ -147,13 +147,13 @@
 			return false;
 	    }
 	    */
-	    function autentica_login($login, $MD5_senha){
+	    function autentica_login($login, $senha){
     		//load database
 			$this->data_base_object = $this->load->database($this->config_database,true);
 			
 			//cria consulta
 			$this->data_base_object->where('Email = ', $login);
-			$this->data_base_object->where('Password = ', $MD5_senha);
+			$this->data_base_object->where('Password = ', md5($senha));
 			
 			//executa query
 			$query = $this->data_base_object->get_where($this->nome_tabela); 

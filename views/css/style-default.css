@@ -2,6 +2,43 @@
 	width: 940px;
 }
 
+/* Form busca */
+
+.buscar-veiculo.well{
+	padding: 5px 20px;
+}
+.buscar-veiculo h3{
+	margin-top: 0;
+}
+.buscar-veiculo .btn-group{
+	margin-bottom: 20px;
+}
+.buscar-veiculo .form-horizontal .control-group .control-label{
+	width: 50px;
+}
+.buscar-veiculo .form-horizontal .control-group .controls{
+	margin-left: 70px;
+}
+
+.home-planos > div{
+	min-height: 310px !important;
+	position: relative;
+}
+.home-planos > div h2 span{
+	float: right;
+	background-color: #5bb75b;
+	border-radius: 4px;
+	color: #fff;
+	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.25);
+	padding: 0 10px;
+}
+.home-planos > div a.btn{
+	display: block;
+	vertical-align: bottom;
+	position: absolute;
+	bottom: 0;
+}
+
 /* Cadastro */
 
 .seleciona-planos .span4{
@@ -39,8 +76,19 @@
 .dados-cadastro form#login{
 	margin-left: 0;
 }
-.dados-cadastro #nome{
-	text-transform:capitalize;
+.dados-cadastro .email .help-inline,
+.dados-cadastro .resenha .help-inline,
+.dados-cadastro .estado .help-inline,
+.dados-cadastro .cidade .help-inline{
+	display: none;
+}
+.dados-cadastro .email.success .help-inline.valid,
+.dados-cadastro .email.error .help-inline.invalid,
+.dados-cadastro .resenha.error .help-inline.invalid,
+.dados-cadastro .estado.error .help-inline.invalid,
+.dados-cadastro .cidade.error .help-inline.invalid,
+.dados-cadastro .email.warning .help-inline.joined{
+	display: inline-block;
 }
 
 /* Footer */

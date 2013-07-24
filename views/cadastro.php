@@ -14,7 +14,7 @@
       <h1>Anuncie no Autocloud</h1>
       <div class="row-fluid dados-cadastro">
           <form id="cadastro" class="form-horizontal span8" method="POST" action="<?=base_url().'cadastro/novocadastro/'.$this->input->get('tipoPlano').'/'?>">
-            <legend>Informe seus dados</legend>
+            <legend>Informe seus dados </legend>
             
             <div class="control-group visible">
               <label class="control-label" for="email">E-mail</label>
@@ -49,6 +49,7 @@
             </div>
             <div class="control-group">
               <div class="controls">
+                <input type="hidden" id="tipoPlano" name="tipoPlano" value="<?=$this->input->get('tipoPlano')?>">
                 <button type="submit" class="btn btn-primary btn-large">Prosseguir &raquo;</button>
               </div>
             </div>

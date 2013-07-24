@@ -21,21 +21,29 @@ class Login extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$data = array();
-		$this->load->model('anunciante');
 		$this->load->helper('url');
+		$this->load->helper('form');
+		$this->load->helper('path');
+		$this->load->helper('directory');
+		$this->load->library('upload');
+        $this->load->library('image_lib');
+        $this->load->library('moedas');
+		$this->load->model('TB_Anunciante','anunciante');
+		$this->load->model('TB_AnunciantePessoaFisica','anunciantePF');
+		
 		if($this->anunciante->logged()){
-			redirect('admin/home', 'refresh');
+			redirect(base_url().'admin/', 'refresh');
+		}else{
+			//redirect(base_url().'login', 'refresh');
 		}
 	}
 
 	function index() {
 
-        $this->load->model('anunciante');
-        $this->load->helper('url');
 
         if($this->input->post('email')){
 
-        	if($this->anunciante->autentica_login($this->input->post('email'), md5($this->input->post('senha'))) === true){
+        	if($this->anunciante->autentica_login($this->input->post('email'), $this->input->post('senha')) === true){
 				$this->session->set_userdata('id_login', $this->anunciante->id);
 				$this->session->set_userdata('logged', true);
 				if($this->input->get('redirectURL')){

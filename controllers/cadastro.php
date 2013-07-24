@@ -21,134 +21,85 @@ class Cadastro extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$data = array();
-		$this->load->model('anunciante');
 		$this->load->helper('url');
+		$this->load->helper('form');
+		$this->load->helper('path');
+		$this->load->helper('directory');
+		$this->load->library('upload');
+        $this->load->library('image_lib');
+        $this->load->library('moedas');
+		$this->load->model('TB_Anunciante','anunciante');
+		$this->load->model('TB_AnunciantePessoaFisica','anunciantePF');
+		
 		if($this->anunciante->logged()){
-			if($this->input->get('tipoPlano')){
-				redirect('admin/novoanuncio?tipoPlano='.$this->input->get('tipoPlano'), 'refresh');
-			}else{
-				redirect('admin/', 'refresh');
-			}
+			redirect(base_url().'admin/', 'refresh');
+		}else{
+			//redirect(base_url().'login', 'refresh');
 		}
 
 	}
 
 	public function index(){
-		$this->load->model('anunciante');
-	    //$this->load->model('vehicle');
-		//$this->data['array_vehicle_brand'] = $this->vehicle->vehicle_brand();
+		
+		$data['erro_login']=false;
 
-		//$this->load->library('encrypt');
-		/*
-		if($this->input->post('codigoPlano') !== false ){
+		if($this->input->post('loginEmail') || $this->input->post('loginSenha')){
 
-			$password = md5($this->input->post('senha'));
-
-			$arrayNovoCadastro = array(
-				'TipoAnunciante' => $this->input->post('TipoAnunciante'),
-				'Email' => $this->input->post('email'),
-				'NomeAnunciante' => $this->input->post('nome'),
-				'Password' => $password
-			);
-
-			$this->anunciante->adiciona($arrayNovoCadastro);
-
-			redirect('login?email='.rawurlencode($this->input->post('email')).'&codigoPlano='.$this->input->post('codigoPlano'), 'refresh');
-
-		}
-		*/
-
-		if($this->input->post('loginEmail')){
-
-        	if($this->anunciante->autentica_login($this->input->post('loginEmail'), md5($this->input->post('loginSenha'))) === true){
+        	if($this->anunciante->autentica_login($this->input->post('loginEmail'), $this->input->post('loginSenha')) === true){
 				$this->session->set_userdata('id_login', $this->anunciante->id);
 				$this->session->set_userdata('logged', true);
-				
-				if($this->input->get('tipoPlano')){
-					redirect('admin/novoanuncio?tipoPlano='.$this->input->get('tipoPlano'), 'refresh');
+				if($this->input->get('redirectURL')){
+					redirect($this->input->get('redirectURL'), 'refresh');
 				}else{
-					redirect('admin/', 'refresh');
+					redirect('admin/home', 'refresh');
 				}
 			}else{
-				redirect('login?erro=403', 'refresh');
+				$data['erro_login'] = true;
 			}
         }
-        /*
         if($this->input->post('email')){
-
-        	//$password = md5($this->input->post('senha'));
-        	$arrayNovoCadastro = array(
-				'TipoAnunciante' => $this->input->get('tipoPlano'),
+        	
+        	$array_tb_anunciante = array(
+				'TipoAnunciante' => $this->input->post('TipoAnunciante'),
 				'Email' => $this->input->post('email'),
-				'NomeAnunciante' => $this->input->post('nome'),
-				'Password' => md5($this->input->post('senha'))
+				'Password' => md5($this->input->post('senha')),
+				'TB_Estado_id' => $this->input->post('estado'),
+				'TB_Estado_Nome' => $this->input->post('EstadoText'),
+				'TB_Cidade_id' => $this->input->post('cidade'),
+				'TB_Cidade_Nome' => $this->input->post('CidadeText')
 			);
-			if($this->anunciante->adiciona($arrayNovoCadastro)){
-				if($this->anunciante->autentica_login($this->input->post('email'), md5($this->input->post('senha'))) === true){
+
+			$this->anunciante->adiciona($array_tb_anunciante);
+
+			if($this->anunciante->TipoAnunciante==1){
+
+				$array_tb_anunciantePF = array(
+					'TB_Anunciante_id' => $this->anunciante->id,
+					'NomeAnunciante' => $this->input->post('nome')
+				);
+
+				$this->anunciantePF->adiciona($array_tb_anunciantePF);
+
+				if($this->anunciante->autentica_login($this->input->post('email'), $this->input->post('senha')) === true){
+						
 					$this->session->set_userdata('id_login', $this->anunciante->id);
 					$this->session->set_userdata('logged', true);
-					if($this->input->get('tipoPlano')){
-						redirect('admin/novoanuncio?tipoPlano='.$this->input->get('tipoPlano'), 'refresh');
+					
+					if($this->input->get('redirectURL')){
+						redirect($this->input->get('redirectURL'), 'refresh');
 					}else{
-						redirect('admin/', 'refresh');
+						redirect('admin/home', 'refresh');
 					}
-				}else{
-					redirect('login?erro=403', 'refresh');
-				}
-
+				};
 			}
-			
-
-        }
-        */
-
-	    $this->load->view('cadastro');
-
-	}
-
-	public function verificaEmail(){
-
-		$this->load->model('anunciante');
-
-		if($this->input->get('email')){
-			$email = $this->input->get('email');
-			header('Content-Type: application/x-json; charset=utf-8');
-			echo json_encode($this->anunciante->verificaEmail($email));
-		}
-	}
-
-	public function novoCadastro($tipoPlano){
-
-		$this->load->model('anunciante');
-
-		if($this->input->post('email')){
-
-        	//$password = md5($this->input->post('senha'));
-        	$arrayNovoCadastro = array(
-				'TipoAnunciante' => $tipoPlano,
-				'Email' => $this->input->post('email'),
-				'NomeAnunciante' => $this->input->post('nome'),
-				'Password' => md5($this->input->post('senha'))
-			);
-			if($this->anunciante->adiciona($arrayNovoCadastro)){
-				if($this->anunciante->autentica_login($this->input->post('email'), md5($this->input->post('senha'))) === true){
-					$this->session->set_userdata('id_login', $this->anunciante->id);
-					$this->session->set_userdata('logged', true);
-					if($tipoPlano!=false || $tipoPlano!=null){
-						redirect('admin/novoanuncio?tipoPlano='.$tipoPlano, 'refresh');
-					}else{
-						redirect('admin/', 'refresh');
-					}
-				}else{
-					redirect('login?erro=403', 'refresh');
-				}
-
-			}
-			
 
         }
 
+	    $this->load->view('login-cadastro', $data);
+
 	}
+
+	
 
 	
 	
