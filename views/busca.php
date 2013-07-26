@@ -335,7 +335,7 @@
             </div>
             <div class="control-group">
               <div class="controls">
-                <input type="hidden" id="TipoVeiculo" name="TipoVeiculo" value="">
+                  <input type="hidden" id="TipoVeiculo" name="TipoVeiculo" value="">
                 <button type="submit" class="btn btn-primary btn-large pull-right">Buscar</button>
               </div>
             </div>
@@ -343,41 +343,84 @@
         </div>
         <div class="span8">
           <h2>Venda seu veículo</h2>
-          <p class="lead">Escolha o tipo de veículo e anuncie <strong>gratuitamente</strong></p>
-          <?php 
-          if($this->anunciante->logged()){
-          ?>
-          <div class="row-fluid home-planos">
-            <div class="span6">
-              <h3>Venda seu carro</h3>
-              <img src="<?=base_url()?>applications/portal/views/images/carsale.jpg" alt="Anunciar carro">
-              <a class="btn btn-large btn-block btn-success" href="<?=base_url()?>admin/novo-anuncio-carro" target="_blank">Anunciar carro &raquo;</a>
-            </div><!--/span-->
-            <div class="span6">
-              <h3>Venda sua moto</h3>
-              <img src="<?=base_url()?>applications/portal/views/images/bikesale.jpg" alt="Anunciar carro">
-              <a class="btn btn-large btn-block btn-success" href="<?=base_url()?>admin/novo-anuncio-moto" target="_blank">Anunciar moto &raquo;</a>
-            </div><!--/span-->
-          </div>
-          
-          <?php
-          }else{
-          ?>
-          <div class="row-fluid home-planos">
-            <div class="span6">
-              <h3>Venda seu carro</h3>
-              <img src="<?=base_url()?>applications/portal/views/images/carsale.jpg" alt="Anunciar carro">
-              <a class="btn btn-large btn-block btn-success" href="<?=base_url()?>cadastro?tipoPlano=1&redirectURL=<?=base_url()?>admin/novo-anuncio-carro">Anunciar carro &raquo;</a>
-            </div><!--/span-->
-            <div class="span6">
-              <h3>Venda sua moto</h3>
-              <img src="<?=base_url()?>applications/portal/views/images/bikesale.jpg" alt="Anunciar carro">
-              <a class="btn btn-large btn-block btn-success" href="<?=base_url()?>cadastro?tipoPlano=1&redirectURL=<?=base_url()?>admin/novo-anuncio-moto">Anunciar moto &raquo;</a>
-            </div><!--/span-->
-          </div>
-          <?php
-          }
-          ?>
+          <?=print_r($array_busca)?>
+          <div class="row-fluid resultados-busca">
+            <?php
+            foreach ($array_busca as $row) {
+                  $array_imagens = $this->imagens_anuncio->lista_prateleira($row->TB_Anunciante_id, $row->TB_Anuncio_id);
+                  if($row->TipoVeiculo==1){
+                  ?>
+                        <div class="span12 carros">
+                              <div class="span3">
+                                    <a href="#" class="fotos">
+                                    <?php
+                                    $i=1;
+                                    foreach ($array_imagens as $image) {
+                                    ?>
+                                          <div id="foto<?=$i?>">
+                                                <img src="<?=base_url()?>uploads/thumb_<?=$image->ImageSRC?>"> 
+                                          </div>
+                                    <?php
+                                    $i++;
+                                    }
+                                    ?>
+                                    </a>
+                              </div>
+                              <div class="span4">
+                                    <a href="#">
+                                         <h4><?=$row->Montadora?> <?=$row->Modelo?> <?=$row->Combustivel?></h4> 
+                                    </a>
+                                    <p><strong>R$ <?=$this->moedas->eua2bra($row->ValorVenda)?></strong></p>
+                              </div>
+                              <div class="span2">
+                                    <p><strong><?=$row->AnoFab?> / <?=$row->AnoMod?></strong></p>
+                              </div>
+                              <div class="span3">
+                                    <p><?=$row->TB_Cidade_Nome?></p>
+                                    <p><?=$row->TB_Estado_Nome?></p>
+                                    
+                              </div>
+                        </div>
+                  <?php
+                  }else{
+                  ?>
+                        <div class="span12 motos">
+                              <div class="span3">
+                                    <a href="#" class="fotos">
+                                    <?php
+                                    $i=1;
+                                    foreach ($array_imagens as $image) {
+                                    ?>
+                                          <div id="foto<?=$i?>">
+                                                <img src="<?=base_url()?>uploads/thumb_<?=$image->ImageSRC?>"> 
+                                          </div>
+                                    <?php
+                                    $i++;
+                                    }
+                                    ?>
+                                    </a>
+                              </div>
+                              <div class="span4">
+                                    <a href="#">
+                                         <h4><?=$row->Montadora?> <?=$row->Modelo?> <?=$row->Combustivel?></h4> 
+                                    </a>
+                                    <p><strong>R$ <?=$this->moedas->eua2bra($row->ValorVenda)?></strong></p>
+                              </div>
+                              <div class="span2">
+                                    <p><strong><?=$row->AnoFab?> / <?=$row->AnoMod?></strong></p>
+                              </div>
+                              <div class="span3">
+                                    <p><?=$row->TB_Cidade_Nome?></p>
+                                    <p><?=$row->TB_Estado_Nome?></p>
+                                    
+                              </div>
+                        </div>
+                  <?php
+                  }
+            }
+            ?>
+
+            </div>
         </div>
       </div>
       
@@ -389,6 +432,28 @@
 
     <?php include_once('includes/scripts_footer.php') ?>
     <script src="<?=base_url()?>applications/portal/views/js/combo-veiculos.js"></script>
+    <style type="text/css">
+      .fotos{
+            background: #000;
+            width: 140px;
+            height: 140px;
+            display: block;
+            position: relative;
+      }
+      .fotos > div{
+            width: 50%;
+            height: 50%;
+            position: absolute;
+      }
+      .fotos #foto2,
+      .fotos #foto4{
+            left: 50%
+      }
+      .fotos #foto3,
+      .fotos #foto4{
+            top:50%;
+      }
+    </style>
 
   </body>
 </html>

@@ -3,12 +3,18 @@
 
   var tipo_veiculo = 1;
 
+  $('#TipoVeiculo').val(tipo_veiculo);
 
   $(".tipo_veiculo").click(function(){
     tipo_veiculo = $(this).val();
-    console.log(tipo_veiculo);
+    $('#TipoVeiculo').val(tipo_veiculo);
     $("#fabricante").select2({
       placeholder: "Aguarde",
+      allowClear: true
+    });
+    $('#modelo').html('<option></option>');
+    $("#modelo").select2({
+      placeholder: "Modelo",
       allowClear: true
     });
     $.ajax({
@@ -17,14 +23,14 @@
       success: function (data){
         $('#fabricante').html('<option></option>');
         $.each(data, function(i, fabricante){
-          $('#fabricante').append('<option value="'+fabricante.id+'">'+fabricante.Nome+'</option>');
+          $('#fabricante').append('<option value="'+fabricante.Chave+'">'+fabricante.Nome+'</option>');
         });
         $('#fabricante').select2({
           placeholder: "Marca",
           allowClear: true
         });
         $('#fabricante').select2('enable', true);
-        $('#modelo, #anoDe, anoAte, #versao').attr('disabled',true).html('<option></option>');
+        $('#modelo').attr('disabled',true);
       }
     });
   });
@@ -39,13 +45,26 @@
     placeholder: "Aguarde",
     allowClear: true
   });
-
+  $("#modelo").select2({
+    placeholder: "Modelo",
+    allowClear: true
+  });
+  $("#anoDe").select2({
+    placeholder: "De",
+    allowClear: true
+  });
+  $("#anoAte").select2({
+    placeholder: "Até",
+    allowClear: true
+  });
   $("#estado").select2({
     placeholder: "Aguarde",
     allowClear: true
   });
-
-  
+  $("#cidade").select2({
+    placeholder: "Cidade",
+    allowClear: true
+  });
 
   //Carrega Fabricantes
   $.ajax({
@@ -54,7 +73,7 @@
     success: function (data){
       $('#fabricante').html('<option></option>');
       $.each(data, function(i, fabricante){
-        $('#fabricante').append('<option value="'+fabricante.id+'">'+fabricante.Nome+'</option>');
+        $('#fabricante').append('<option value="'+fabricante.Chave+'">'+fabricante.Nome+'</option>');
       });
       $('#fabricante').select2({
         placeholder: "Marca",
@@ -88,11 +107,11 @@
     $('#modelo').append('<option value="false">Aguarde</option>');
     $.ajax({
       type: 'GET',
-      url: endpoint+'carros/modelos/'+fabricante_id,
+      url: endpoint+'carros/modelos/'+tipo_veiculo+'/'+fabricante_id,
       success: function (data){
         $('#modelo').html('<option></option>');
         $.each(data, function(i, modelo){
-          $('#modelo').append('<option value="'+modelo.id+'">'+modelo.Nome+'</option>');
+          $('#modelo').append('<option value="'+modelo.Chave+'">'+modelo.Nome+'</option>');
         });
         $('#modelo').select2({
           placeholder: "Modelo",
@@ -105,81 +124,21 @@
       }
     });
   });
-  $('#modelo').change(function(){
-    var fabricante_id = $(this).val();
-    $('#anoDe').empty();
-    $('#anoDe').append('<option value="false">Aguarde</option>');
-    $.ajax({
-      type: 'GET',
-      url: endpoint+'carros/anofabricacao/'+fabricante_id,
-      success: function (data){
-        $('#anoDe').html('<option></option>');
-        $.each(data, function(i, modelo){
-          $('#anoDe').append('<option value="'+modelo.id+'">'+modelo.Ano+'</option>');
-        });
-        $('#anoDe').select2({
-          placeholder: "De",
-          allowClear: true
-        });
-        $('#anoDe').select2('enable', true);
-        $('#modelo option:selected').each(function () {
-          $('#modeloText').val($(this).text());
-        });
-      }
-    });
-
-
-  });
-  $('#anoDe').change(function(){
-    var fabricante_id = $('#modelo').val();
-    $('#anoAte').empty();
-    $('#anoAte').append('<option value="false">Aguarde</option>');
-    $.ajax({
-      type: 'GET',
-      url: endpoint+'carros/anofabricacao/'+fabricante_id,
-      success: function (data){
-        $('#anoAte').html('<option></option>');
-        $.each(data, function(i, modelo){
-          $('#anoAte').append('<option value="'+modelo.id+'">'+modelo.Ano+'</option>');
-        });
-        $('#anoAte').select2({
-          placeholder: "Até",
-          allowClear: true
-        });
-        $('#anoAte').select2('enable', true);
-        $('#anoFab option:selected').each(function () {
-          $('#AnoFabText').val($(this).text());
-        });
-      }
-    });
-  });
   $('#anoAte').change(function(){
-    var fabricante_id = $(this).val();
-    $('#versao').empty();
-    $('#versao').append('<option value="false">Aguarde</option>');
-    $.ajax({
-      type: 'GET',
-      url: endpoint+'carros/versao/'+fabricante_id,
-      success: function (data){
-        $('#versao').html('<option></option>');
-        $.each(data, function(i, modelo){
-          $('#versao').append('<option value="'+modelo.id+'">'+modelo.Nome+'</option>');
-        });
-        $('#versao').select2({
-          placeholder: "Versão",
-          allowClear: true
-        });
-        $('#versao').select2('enable', true);
-        $('#anoMod option:selected').each(function () {
-          $('#AnoModText').val($(this).text());
-        });
-      }
-    });
-  });
-  $('#versao').change(function(){
-    $('#versao option:selected').each(function () {
-      $('#versaoText').val($(this).text());
-    });
+    var ano_de;
+    if (parseInt($('#anoDe').val()) > parseInt($('#anoAte').val())) {
+      ano_de = $('#anoDe').val();
+      $('#anoDe').val($('#anoAte').val());
+      $('#anoAte').val(ano_de);
+      $("#anoDe").select2({
+        placeholder: "De",
+        allowClear: true
+      });
+      $("#anoAte").select2({
+        placeholder: "Até",
+        allowClear: true
+      });
+    }
   });
   $('#estado').change(function(){
     var fabricante_id = $(this).val();
@@ -198,40 +157,8 @@
           allowClear: true
         });
         $('#cidade').select2('enable', true);
-        $('#estado option:selected').each(function () {
-          $('#EstadoText').val($(this).text());
-          $('#CidadeText').val('');
-        });
       }
     });
   });
-  $('#cidade').change(function(){
-    $('#cidade option:selected').each(function () {
-      $('#CidadeText').val($(this).text());
-    });
-  });
 
-  $("#modelo").select2({
-    placeholder: "Modelo",
-    allowClear: true
-  });
-  $("#anoDe").select2({
-    placeholder: "De",
-    allowClear: true
-  });
-  $("#anoAte").select2({
-    placeholder: "Até",
-    allowClear: true
-  });
-  $("#versao").select2({
-    placeholder: "Versão",
-    allowClear: true
-  });
-  $("#estado").select2({
-    placeholder: "Estado",
-    allowClear: true
-  });
-  $("#cidade").select2({
-    placeholder: "Cidade",
-    allowClear: true
-  });
+  
