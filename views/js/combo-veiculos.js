@@ -1,5 +1,9 @@
-  var endpoint = 'http://www.autocloud.com.br/webservice/';
-  //var endpoint = 'http://localhost/autocloud/webservice/';
+  var endpoint;
+  if (location.host=='localhost') {
+    endpoint = location.protocol+'//'+location.host+'/autocloud/webservice/';
+  }else{
+    endpoint = location.protocol+'//'+location.host+'/webservice/';
+  }
 
   var tipo_veiculo = 1;
 

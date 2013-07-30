@@ -150,7 +150,11 @@
 			foreach ($query->result() as $row){
 				$array_objetos[] = $row;
 			}
-			return $array_objetos;
+			if($query->num_rows()<1){
+				return false;
+			}else{
+				return $array_objetos;
+			}
 	    }
 
 	    function lista($id_anunciante) {
