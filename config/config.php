@@ -14,15 +14,11 @@
 | path to your installation.
 |
 */
-/*
-$isLocalHost = '';
-if($_SERVER['HTTP_HOST']=='localhost'){
-	$isLocalHost = '/autocloud';
-}
-*/
 
-//$config['base_url']	= 'http://'.$_SERVER['HTTP_HOST'].$isLocalHost.'/application/views/' ;
-$config['base_url']	= 'http://localhost/autocloud/' ;
+$config['base_url'] = ($_SERVER['HTTP_HOST']=='localhost') ? 
+  'http://localhost/autocloud/portal/' : // local base url
+  'http://www.autocloud.com.br/'; // live base url 
+
 
 /*
 |--------------------------------------------------------------------------

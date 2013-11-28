@@ -28,7 +28,7 @@
                   <li><a href="<?=base_url()?>admin/meusdados" target="_blank">Meus dados</a></li>
                   <li><a href="<?=base_url()?>admin/meusdados/senha" target="_blank">Alterar senha</a></li>
                   <li class="divider"></li>
-                  <li><a href="<?=base_url()?>logout">Sair</a></li>
+                  <li><a href="<?=base_url()?>admin/login/logout">Sair</a></li>
                 </ul>
               </li>
               <?php
@@ -36,7 +36,7 @@
               ?>
               <!--<li><a href="<?=base_url()?>cadastro">Cadastre-se</a></li>-->
               <li class="divider-vertical"></li>
-              <li><a href="<?=base_url()?>login?redirectURL=<?=current_url()?>">Login</a></li>
+              <li><a href="<?=base_url()?>admin/login?redirectURL=<?=current_url()?>">Login</a></li>
               <?php
             }
           ?>
