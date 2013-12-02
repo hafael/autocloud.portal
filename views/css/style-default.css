@@ -1,5 +1,5 @@
 .container{
-	width: 940px;
+	/*width: 940px;*/
 }
 
 /* Form busca */
@@ -89,6 +89,12 @@
 .dados-cadastro .cidade.error .help-inline.invalid,
 .dados-cadastro .email.warning .help-inline.joined{
 	display: inline-block;
+}
+
+/* Contato */
+
+.form-contato {
+	margin-top: 40px;
 }
 
 /* Footer */

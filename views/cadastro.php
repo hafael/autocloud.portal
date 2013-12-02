@@ -122,7 +122,7 @@
 
 
     <?php include_once('includes/scripts_footer.php') ?>
-    <script src="<?=base_url().APPPATH?>/views/js/scripts-cadastro.js"></script>
+    <script src="<?=base_url().APPPATH?>views/js/scripts-cadastro.js"></script>
 
   </body>
 </html>

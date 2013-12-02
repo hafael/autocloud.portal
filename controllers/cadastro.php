@@ -32,7 +32,7 @@ class Cadastro extends CI_Controller {
 		$this->load->model('TB_AnunciantePessoaFisica','anunciantePF');
 		
 		if($this->anunciante->logged()){
-			redirect(base_url().'admin/', 'refresh');
+			redirect(base_url(), 'refresh');
 		}else{
 			//redirect(base_url().'login', 'refresh');
 		}
@@ -51,7 +51,7 @@ class Cadastro extends CI_Controller {
 				if($this->input->get('redirectURL')){
 					redirect($this->input->get('redirectURL'), 'refresh');
 				}else{
-					redirect('admin/home', 'refresh');
+					redirect('home', 'refresh');
 				}
 			}else{
 				$data['erro_login'] = true;
@@ -88,7 +88,7 @@ class Cadastro extends CI_Controller {
 					if($this->input->get('redirectURL')){
 						redirect($this->input->get('redirectURL'), 'refresh');
 					}else{
-						redirect('admin/home', 'refresh');
+						redirect('home', 'refresh');
 					}
 				};
 			}
@@ -98,18 +98,6 @@ class Cadastro extends CI_Controller {
 	    $this->load->view('login-cadastro', $data);
 
 	}
-
-	
-
-	
-	
-
-	
-	
-	
-	
-
-	
 
 }
 

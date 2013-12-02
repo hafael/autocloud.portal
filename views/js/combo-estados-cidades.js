@@ -1,5 +1,9 @@
-  var endpoint = 'http://www.autocloud.com.br/webservice/';
-  //var endpoint = 'http://localhost/autocloud/webservice/';
+  var endpoint;
+  if (location.host=='localhost') {
+    endpoint = location.protocol+'//'+location.host+'/autocloud/api/';
+  }else{
+    endpoint = 'http://api.autocloud.com.br/';
+  }
 
   var tipo_veiculo = 1;
 
@@ -17,14 +21,14 @@
   //Carrega Estados
   $.ajax({
     type: 'GET',
-    url: endpoint+'estadocidade/estados',
+    url: endpoint+'places/states',
     success: function (data){
       $('#estado').append('<option disabled></option>');
-      $.each(data, function(i, fabricante){
-        $('#estado').append('<option value="'+fabricante.id+'">'+fabricante.Nome+'</option>');
+      $.each(data.states, function(i, states){
+        $('#estado').append('<option value="'+states.id+'">'+states.name+'</option>');
       });
       $('#estado').select2({
-        placeholder: "Estado",
+        placeholder: "Selecione o estado",
         allowClear: true
       });
       $('#estado').select2('enable', true);
@@ -37,11 +41,11 @@
     $('#cidade').append('<option value="false">Aguarde</option>');
     $.ajax({
       type: 'GET',
-      url: endpoint+'estadocidade/cidades/'+fabricante_id,
+      url: endpoint+'places/cities/id/'+fabricante_id,
       success: function (data){
         $('#cidade').html('<option></option>');
-        $.each(data, function(i, modelo){
-          $('#cidade').append('<option value="'+modelo.id+'">'+modelo.Nome+'</option>');
+        $.each(data.cities, function(i, city){
+          $('#cidade').append('<option value="'+city.id+'">'+city.name+'</option>');
         });
         $('#cidade').select2({
           placeholder: "Selecione a cidade",

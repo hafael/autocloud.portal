@@ -1,8 +1,14 @@
+var endpoint;
+  if (location.host=='localhost') {
+    endpoint = location.protocol+'//'+location.host+'/autocloud/api/';
+  }else{
+    endpoint = 'http://api.autocloud.com.br/';
+  }
+
 function validaEmail(email){
 	var er = /^[a-zA-Z0-9][a-zA-Z0-9\._-]+@([a-zA-Z0-9\._-]+\.)[a-zA-Z-0-9]{2}/;
 	if(er.exec(email)){
 		return true;
-
 	}else{
 		return false;
 	}
@@ -14,10 +20,11 @@ function existeEmail(email){
 	}
 	$.ajax({
 		type: 'GET',
-		url: endpoint+'usuario/email/',
+		url: 'http://api.autocloud.com.br/users/user/',
 		data: params,
 		success: function (data){
-			if (data) {
+			console.log(data.user);
+			if (data.user) {
 				response = true;
 			}else{
 				response = false;
@@ -34,13 +41,14 @@ $(function() {
 		var email = $('.dados-cadastro #email').val();
 		if(validaEmail(email)){
 			$(this).parents('.control-group').removeClass('error warning').addClass('success');
-			console.log('email valido');
 			$.ajax({
 				type: 'GET',
-				url: endpoint+'usuario/email/',
+				dataType: 'json',
+				url: endpoint+'users/user/',
 				data: {email: email},
 				success: function (data){
-					if (data) {
+					console.log(data.user);
+					if (data.user) {
 						$('.dados-cadastro #email').parents('.control-group').removeClass('success error').addClass('warning');
 						
 					}
@@ -52,7 +60,13 @@ $(function() {
 			
 		}
 	});
-
+	$('.dados-cadastro #telefone').focusout(function(){
+		if($(this).val().length > 10){
+			$(this).parents('.control-group').removeClass('error').addClass('success');
+		}else{
+			$(this).parents('.control-group').removeClass('success').addClass('error');
+		}
+	});
 	$('.dados-cadastro #nome').focusout(function(){
 		if($(this).val().split(' ').length > 1){
 			$('.dados-cadastro #nome').parents('.control-group').removeClass('error').addClass('success');
@@ -91,25 +105,25 @@ $(function() {
 	});
 	$('.dados-cadastro #estado').change(function(){
 		if($(this).val()!=''){
-			$(this).parents('.control-group').removeClass('error').addClass('success');
+			$(this).parents('.control-group').removeClass('error');
 		}else{
-			$(this).parents('.control-group').removeClass('success').addClass('error');
+			$(this).parents('.control-group').addClass('error');
 		}
 	});
 	$('.dados-cadastro #cidade').change(function(){
 		if($(this).val()!=''){
-			$(this).parents('.control-group').removeClass('error').addClass('success');
+			$(this).parents('.control-group').removeClass('error');
 		}else{
-			$(this).parents('.control-group').removeClass('success').addClass('error');
+			$(this).parents('.control-group').addClass('error');
 		}
 	});
 	$('.dados-cadastro').submit(function(){
 		
-		if($('#estado').val()==''){
-			$('.estado.control-group').addClass('error');
+		if($('.dados-cadastro #estado').val()==''){
+			$('.dados-cadastro .estado.control-group').addClass('error');
 		}
 		if($('#cidade').val()==''){
-			$('.cidade.control-group').addClass('error');
+			$('.dados-cadastro .cidade.control-group').addClass('error');
 		}
 
 		var error=0;

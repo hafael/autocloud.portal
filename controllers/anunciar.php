@@ -21,46 +21,26 @@ class Anunciar extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$data = array();
-
+		$this->load->helper('url');
+		$this->load->helper('form');
+		$this->load->helper('path');
+		$this->load->helper('directory');
+		$this->load->library('upload');
+        $this->load->library('image_lib');
+        $this->load->library('moedas');
+		$this->load->model('TB_Anunciante','anunciante');
+		$this->load->model('TB_AnunciantePessoaFisica','anunciantePF');
+		
+		if($this->anunciante->logged()){
+			$this->anunciante->define($this->session->userdata('id_login'));
+			$this->anunciantePF->define($this->session->userdata('id_login'));
+		}
 	}
 
 	public function index(){
-		$this->load->model('anunciante');
-	    //$this->load->model('vehicle');
-		//$this->data['array_vehicle_brand'] = $this->vehicle->vehicle_brand();
-
-		//$this->load->library('encrypt');
-
-		if($this->input->post('codigoPlano') !== false ){
-
-			$password = md5($this->input->post('senha'));
-
-			$arrayNovoCadastro = array(
-				'TipoAnunciante' => $this->input->post('TipoAnunciante'),
-				'Email' => $this->input->post('email'),
-				'NomeAnunciante' => $this->input->post('nome'),
-				'Password' => $password
-			);
-
-			$this->anunciante->adiciona($arrayNovoCadastro);
-
-			redirect('login?email='.rawurlencode($this->input->post('email')).'&codigoPlano='.$this->input->post('codigoPlano'), 'refresh');
-
-		}
 
 	    $this->load->view('escolha_anuncio');
 
-	}
-
-	public function verificaEmail(){
-
-		$this->load->model('anunciante');
-
-		if($this->input->get('email')){
-			$email = $this->input->get('email');
-			header('Content-Type: application/x-json; charset=utf-8');
-			echo json_encode($this->anunciante->verificaEmail($email));
-		}
 	}
 
 	
